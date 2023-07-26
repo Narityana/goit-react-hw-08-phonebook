@@ -1,0 +1,13 @@
+.app__container {
+    margin: 100px auto;
+    width: 600px;
+    padding: 30px;
+    background-color: rgb(59, 64, 121);
+    display: flex;
+    flex-direction: column;
+}
+
+.app__title, .app__subTitle {
+    color: white;
+    text-align: center;
+}
