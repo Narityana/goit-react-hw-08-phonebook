@@ -1,14 +1,16 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import { fetchContacts } from 'redux/operations';
+import { fetchContacts } from 'redux/Contacts/contacts-operations';
 import {
   selectError,
   selectIsLoading,
   selectFiltredContacts,
 } from 'redux/selectors';
+import LinearProgress from '@mui/material/LinearProgress';
 
 import ContactListItem from 'components/ContactListItem/ContactListItem';
-import css from './ComtactList.module.css';
+
+import { Container, SubTitle } from './ComtactList.styled';
 
 const ContactList = () => {
   const filteredContacts = useSelector(selectFiltredContacts);
@@ -22,10 +24,11 @@ const ContactList = () => {
   }, [dispatch]);
 
   return (
-    <div className={css.contact__container}>
-      {isLoading && !error && <b>Request in progress...</b>}
+    <Container>
+      {isLoading && !error && <LinearProgress />}
       {error && <b>Oops! Something went wrong. Please try again later.</b>}
-      <ul className={css.contact__list}>
+      <SubTitle>- - - Contacts List - - -</SubTitle>
+      <ul>
         {filteredContacts.map(contact => (
           <ContactListItem
             contact={contact}
@@ -36,7 +39,7 @@ const ContactList = () => {
           />
         ))}
       </ul>
-    </div>
+    </Container>
   );
 };
 

@@ -1,11 +1,21 @@
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectContacts } from 'redux/selectors';
-import { addContact } from 'redux/operations';
-import css from './ContactForm.module.css';
+import { addContact } from 'redux/Contacts/contacts-operations';
+import { ButtonAddCont } from 'components/Button/Button.styled';
 
+import {
+  AddIcon,
+  ButtonAdd,
+  AddContainer,
+  Input,
+  CloseIcon,
+} from './ContactForm.styled';
 const ContactForm = () => {
   const dispatch = useDispatch();
   const contacts = useSelector(selectContacts);
+
+  const [isFormVisible, setIsFormVisible] = useState(false);
 
   const handleSubmit = event => {
     event.preventDefault();
@@ -25,37 +35,42 @@ const ContactForm = () => {
     form.reset();
   };
 
+  const handleToggleForm = () => {
+    setIsFormVisible(prevState => !prevState);
+  };
+
   return (
-    <div className={css.contactForm__container}>
-      <form className={css.form} type="submit" onSubmit={handleSubmit}>
-        <label className={css.form__label}>
-          Name
-          <input
-            className={css.form__input}
+    <AddContainer>
+      <ButtonAdd onClick={handleToggleForm}>
+        {isFormVisible ? <CloseIcon /> : <AddIcon />}
+      </ButtonAdd>
+      {isFormVisible ? (
+        <form type="submit" onSubmit={handleSubmit}>
+          <Input
+            label="Name"
             type="text"
             name="name"
             pattern="^[a-zA-Zа-яА-Я]+(([' \-][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
             title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
+            placeholder="Enter name..."
             required
           />
-        </label>
-        <label className={css.form__label}>
-          Number
-          <input
-            className={css.form__input}
+
+          <Input
+            label="Phone Number"
             type="tel"
             name="number"
             pattern="\+?\d{1,4}?[ .\-\s]?\(?\d{1,3}?\)?[ .\-\s]?\d{1,4}[ .\-\s]?\d{1,4}[ .\-\s]?\d{1,9}"
             title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
+            placeholder="Enter number..."
             required
           />
-        </label>
-
-        <button type="submit" className={css.form__button}>
-          Add contact
-        </button>
-      </form>
-    </div>
+          <ButtonAddCont type="submit">Add contact</ButtonAddCont>
+        </form>
+      ) : (
+        <span>Add new contact</span>
+      )}
+    </AddContainer>
   );
 };
 
